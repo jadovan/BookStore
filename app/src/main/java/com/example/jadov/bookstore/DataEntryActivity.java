@@ -133,7 +133,8 @@ public class DataEntryActivity extends AppCompatActivity implements LoaderManage
         mContactSupplierButton = findViewById(R.id.contact_supplier_btn);
 
         mQuantityEditText.setText(R.string.quantity_min_value);
-        mQuantityEditText.setFilters(new InputFilter[]{new InputFilterMinMax("1", "999999")});
+        mQuantityEditText.setFilters(new InputFilter[]
+                {new InputFilterMinMax("0", "999999")});
 
         mDecrementButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,13 +165,16 @@ public class DataEntryActivity extends AppCompatActivity implements LoaderManage
         if (intent.resolveActivity(getPackageManager()) != null && !supplierPhoneNumber.equals("")
         && supplierPhoneNumber.length() >= 7) {
             startActivity(intent);
+        } else {
+            Toast.makeText(this, R.string.invalid_phone_number,
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
     private void decrementQuantity() {
         quantity = Integer.parseInt(mQuantityEditText.getText().toString());
         quantity--;
-        if (quantity < 1) {
+        if (quantity < 0) {
             Toast.makeText(this, getString(R.string.quantity_min_message), Toast.LENGTH_LONG).show();
             return;
         }
@@ -178,6 +182,9 @@ public class DataEntryActivity extends AppCompatActivity implements LoaderManage
     }
 
     private void incrementQuantity() {
+        if (mQuantityEditText.getText().toString().equals("")) {
+            mQuantityEditText.setText(R.string.quantity_min_value);
+        }
         quantity = Integer.parseInt(mQuantityEditText.getText().toString());
         quantity++;
         displayQuantity();

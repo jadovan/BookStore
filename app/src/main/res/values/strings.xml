@@ -88,8 +88,8 @@
 
     <string name="decrement_btn">-</string>
     <string name="increment_btn">+</string>
-    <string name="quantity_min_message">Quantity minimum value is 1</string>
-    <string name="quantity_min_value">1</string>
+    <string name="quantity_min_message">Quantity minimum value is 0</string>
+    <string name="quantity_min_value">0</string>
 
     <!-- Dialog message when user is leaving editor but hasn't saved changes -->
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
@@ -126,4 +126,7 @@
 
     <!-- Additional text for toast message when book is out of stock -->
     <string name="out_of_stock">is currently out of stock! Please select another book!</string>
+
+    <!-- Toast message for invalid supplier phone number -->
+    <string name="invalid_phone_number">Supplier phone number must be at least 7 digits!</string>
 </resources>
