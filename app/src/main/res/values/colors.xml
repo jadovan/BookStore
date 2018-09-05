@@ -11,4 +11,6 @@
     <color name="editorColorPrimaryDark">#387F9F</color>
 
     <color name="colorTxt">#000000</color>
+    <color name="bookItemColorPrimary">#2B3D4D</color>
+    <color name="bookItemColor">#AEB6BD</color>
 </resources>

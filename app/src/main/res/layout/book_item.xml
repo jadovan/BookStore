@@ -20,9 +20,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
-                android:text="Title: "
+                android:text="@string/item_title_label"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="#2B3D4D" />
+                android:textColor="@color/bookItemColorPrimary" />
 
             <TextView
                 android:id="@+id/list_book_name"
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="#2B3D4D" />
+                android:textColor="@color/bookItemColorPrimary" />
 
         </LinearLayout>
 
@@ -43,9 +43,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:text="ISBN:   "
+                android:text="@string/item_isbn_label"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:textColor="#AEB6BD" />
+                android:textColor="@color/bookItemColor" />
 
             <TextView
                 android:id="@+id/list_book_isbn"
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:textColor="#AEB6BD" />
+                android:textColor="@color/bookItemColor" />
 
         </LinearLayout>
 
@@ -66,9 +66,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:text="Price:   $"
+                android:text="@string/item_price_label"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:textColor="#AEB6BD" />
+                android:textColor="@color/bookItemColor" />
 
             <TextView
                 android:id="@+id/list_book_price"
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:textColor="#AEB6BD" />
+                android:textColor="@color/bookItemColor" />
 
         </LinearLayout>
 
@@ -112,9 +112,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:text="Quantity: "
+                android:text="@string/item_quantity_label"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:textColor="#AEB6BD" />
+                android:textColor="@color/bookItemColor" />
 
             <TextView
                 android:id="@+id/list_book_quantity"
@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:textColor="#AEB6BD" />
+                android:textColor="@color/bookItemColor" />
 
         </LinearLayout>
 
