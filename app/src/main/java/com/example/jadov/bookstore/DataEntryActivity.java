@@ -87,6 +87,9 @@ public class DataEntryActivity extends AppCompatActivity implements LoaderManage
 
     private boolean mBookHasChanged = false;
 
+    private final int MIN_QTY = 0;
+    private final int MAX_QTY = 999999;
+
     // OnTouchListener that listens for any user touches on a View, implying that they are modifying
     // the view, and we change the mBookHasChanged boolean to true.
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
@@ -134,7 +137,7 @@ public class DataEntryActivity extends AppCompatActivity implements LoaderManage
 
         mQuantityEditText.setText(R.string.quantity_min_value);
         mQuantityEditText.setFilters(new InputFilter[]
-                {new InputFilterMinMax("0", "999999")});
+                {new InputFilterMinMax(MIN_QTY, MAX_QTY)});
 
         mDecrementButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,9 +175,12 @@ public class DataEntryActivity extends AppCompatActivity implements LoaderManage
     }
 
     private void decrementQuantity() {
+        if (mQuantityEditText.getText().toString().equals("")) {
+            mQuantityEditText.setText(R.string.quantity_min_value);
+        }
         quantity = Integer.parseInt(mQuantityEditText.getText().toString());
         quantity--;
-        if (quantity < 0) {
+        if (quantity < MIN_QTY) {
             Toast.makeText(this, getString(R.string.quantity_min_message), Toast.LENGTH_LONG).show();
             return;
         }
@@ -187,6 +193,10 @@ public class DataEntryActivity extends AppCompatActivity implements LoaderManage
         }
         quantity = Integer.parseInt(mQuantityEditText.getText().toString());
         quantity++;
+        if (quantity > MAX_QTY) {
+            Toast.makeText(this, getString(R.string.quantity_max_message), Toast.LENGTH_LONG).show();
+            return;
+        }
         displayQuantity();
     }
 
