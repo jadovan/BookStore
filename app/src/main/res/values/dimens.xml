@@ -3,9 +3,17 @@
     <!-- Margin around the floating action button in CatalogActivity -->
     <dimen name="fab_margin">16dp</dimen>
 
-    <!-- Common margin and padding value used throughout the app -->
+    <!-- Common margins and padding values used throughout the app -->
     <dimen name="activity_margin">16dp</dimen>
+    <dimen name="activity_medium_margin">8dp</dimen>
+    <dimen name="activity_large_margin">48dp</dimen>
 
     <!-- Common margin and padding value used within layouts -->
     <dimen name="layout_margin">4dp</dimen>
+
+    <dimen name="btn_width">32dp</dimen>
+    <dimen name="btn_height">32dp</dimen>
+    <dimen name="normalTxtSize">16sp</dimen>
+    <dimen name="qty_margin">24dp</dimen>
+    <dimen name="book_item_height">96dp</dimen>
 </resources>

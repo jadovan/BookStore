@@ -1,16 +1,25 @@
 package com.example.jadov.bookstore;
 
+import android.app.AlertDialog;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.jadov.bookstore.data.BookContract.BookEntry;
@@ -18,9 +27,17 @@ import com.example.jadov.bookstore.data.BookDbHelper;
 
 import java.util.Locale;
 
-public class BookActivity extends AppCompatActivity {
+/**
+ * Displays list of books that were entered and stored in the app.
+ */
+public class BookActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private BookDbHelper mDbHelper;
+    BookDbHelper mDbHelper;
+
+    private static final int BOOK_LOADER = 0;
+
+    // If non-null, this is the current filter the user has provided.
+    private BookCursorAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,110 +53,46 @@ public class BookActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //displayDatabaseInfo();
+
+        // Find the ListView which will be populated with the book data
+        ListView bookListView = findViewById(R.id.book_list_view);
+
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+        View emptyView = findViewById(R.id.empty_view);
+        bookListView.setEmptyView(emptyView);
 
         mDbHelper = new BookDbHelper(this);
 
-        displayDatabaseInfo();
-    }
+        mAdapter = new BookCursorAdapter(this, null);
+        bookListView.setAdapter(mAdapter);
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        displayDatabaseInfo();
+        // Setup item click listener
+        bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                // Create new intent to go to {@Link DataEntryActivity}
+                Intent intent = new Intent(BookActivity.this, DataEntryActivity.class);
+                // Form the content URI that represents the specific book that was clicked on by
+                // appending the "id" (passed as input to this method) onto the
+                // {@Link BookEntry#CONTENT_URI}.
+                Uri currentBookUri = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
+                // Set the URI on the data field of the intent
+                intent.setData(currentBookUri);
+                // Launch the intent to display the data for the current book.
+                startActivity(intent);
+            }
+        });
+
+        getLoaderManager().initLoader(BOOK_LOADER, null, this);
     }
 
     /**
-     * Temporary helper method to display information in the onscreen TextView about the state of
-     * the books database.
+     * Helper method to delete all books in the database.
      */
-    private void displayDatabaseInfo() {
-
-        // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        String[] projection = {
-                BookEntry._ID,
-                BookEntry.COLUMN_PRODUCT_NAME,
-                BookEntry.COLUMN_PRICE,
-                BookEntry.COLUMN_QUANTITY,
-                BookEntry.COLUMN_SUPPLIER_NAME,
-                BookEntry.COLUMN_SUPPLIER_PHONE_NUM,
-                BookEntry.COLUMN_ISBN};
-
-        Cursor cursor = db.query(
-                BookEntry.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-
-        TextView displayView = findViewById(R.id.book_text_view);
-
-        try {
-            // Display the number of rows in the Cursor (which reflects the number of rows in the
-            // books table in the database).
-            String displayNumRows = getString(R.string.number_of_rows) + cursor.getCount() + "\n";
-            displayView.setText(displayNumRows);
-            displayView.append("\n" + BookEntry._ID + " - " +
-                    BookEntry.COLUMN_PRODUCT_NAME + " - " +
-                    BookEntry.COLUMN_PRICE + " - " +
-                    BookEntry.COLUMN_QUANTITY + " - " +
-                    BookEntry.COLUMN_SUPPLIER_NAME + " - " +
-                    BookEntry.COLUMN_SUPPLIER_PHONE_NUM + " - " +
-                    BookEntry.COLUMN_ISBN + "\n");
-
-            int idColumnIndex = cursor.getColumnIndex(BookEntry._ID);
-            int titleColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_PRODUCT_NAME);
-            int priceColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_PRICE);
-            int quantityColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_QUANTITY);
-            int supplierNameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_SUPPLIER_NAME);
-            int supplierPhoneColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_SUPPLIER_PHONE_NUM);
-            int isbnColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_ISBN);
-
-            while (cursor.moveToNext()) {
-                int currentId = cursor.getInt(idColumnIndex);
-                String currentTitle = cursor.getString(titleColumnIndex);
-                double currentPrice = cursor.getDouble(priceColumnIndex);
-                int currentQuantity = cursor.getInt(quantityColumnIndex);
-                String currentSupplierName = cursor.getString(supplierNameColumnIndex);
-                String currentSupplierPhone = cursor.getString(supplierPhoneColumnIndex);
-                String currentIsbn = cursor.getString(isbnColumnIndex);
-                displayView.append("\n" + currentId + " - " + currentTitle + " - " + String.format(Locale.US, "%.2f", currentPrice)
-                        + " - " + currentQuantity + " - " + currentSupplierName + " - "
-                        + currentSupplierPhone + " - " + currentIsbn);
-            }
-        } finally {
-            // Closes the cursor and releases all resources to make it invalid
-            cursor.close();
-        }
-    }
-
-    private void insertBook() {
-
-        // Gets the data repository in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(BookEntry.COLUMN_PRODUCT_NAME, getString(R.string.dummy_title));
-        values.put(BookEntry.COLUMN_PRICE, 11.72);
-        values.put(BookEntry.COLUMN_QUANTITY, 59);
-        values.put(BookEntry.COLUMN_SUPPLIER_NAME, getString(R.string.dummy_supplier_name));
-        values.put(BookEntry.COLUMN_SUPPLIER_PHONE_NUM, getString(R.string.dummy_supplier_phone));
-        values.put(BookEntry.COLUMN_ISBN, getString(R.string.dummy_isbn));
-
-        long newRowId = db.insert(BookEntry.TABLE_NAME, null, values);
-
-        if (newRowId == -1) {
-            Toast.makeText(this, getText(R.string.toast_error_saving), Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, getString(R.string.toast_successful_save) + newRowId,
-                    Toast.LENGTH_SHORT).show();
-        }
+    private void deleteAllBooks() {
+        int rowsDeleted = getContentResolver().delete(BookEntry.CONTENT_URI, null, null);
+        Toast.makeText(this, getString(R.string.editor_delete_all_books_successful),
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -156,15 +109,63 @@ public class BookActivity extends AppCompatActivity {
 
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
-            case R.id.action_insert_dummy_data:
-                insertBook();
-                displayDatabaseInfo();
-                return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
-                // Do nothing for now
+                // Pop up confirmation dialog for deletion
+                showDeleteConfirmationDialog();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, @Nullable Bundle bundle) {
+        String[] projection = {
+                BookEntry._ID,
+                BookEntry.COLUMN_PRODUCT_NAME,
+                BookEntry.COLUMN_ISBN,
+                BookEntry.COLUMN_PRICE,
+                BookEntry.COLUMN_QUANTITY};
+
+        return new CursorLoader(this, BookEntry.CONTENT_URI, projection, null,
+                null, null);
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
+        mAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        mAdapter.swapCursor(null);
+    }
+
+    /**
+     * Prompt the user to confirm that they want to delete this book.
+     */
+    private void showDeleteConfirmationDialog() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_all_books);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button, so delete all books.
+                deleteAllBooks();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

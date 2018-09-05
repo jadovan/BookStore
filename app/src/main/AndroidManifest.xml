@@ -16,7 +16,6 @@
         </activity>
         <activity
             android:name=".DataEntryActivity"
-            android:label="@string/data_entry_activity_title_new_book"
             android:parentActivityName=".BookActivity"
             android:theme="@style/EditorTheme">
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -24,6 +23,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".BookActivity" />
         </activity>
+
+        <provider
+            android:authorities="com.example.jadov.bookstore"
+            android:name=".data.BookProvider"
+            android:exported="false" />
     </application>
 
 </manifest>

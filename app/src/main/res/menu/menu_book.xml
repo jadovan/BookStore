@@ -5,12 +5,8 @@
     tools:context=".BookActivity">
 
     <item
-        android:id="@+id/action_insert_dummy_data"
-        android:title="@string/action_insert_dummy_data"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_delete_all_entries"
+        android:icon="@drawable/delete_all"
         android:title="@string/action_delete_all_entries"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
 </menu>

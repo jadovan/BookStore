@@ -2,14 +2,29 @@
     <!-- Name for the application -->
     <string name="app_name">Book Store</string>
 
+    <!-- Label for buy button in the list item -->
+    <string name="buy_btn">Buy</string>
+
+    <!-- Label for contact supplier button in the edit and add data entry -->
+    <string name="contact_supplier_btn">Contact Supplier</string>
+
     <!-- Label for overflow menu option that inserts fake book data into the app -->
     <string name="action_insert_dummy_data">Insert Dummy Book Data</string>
 
     <!-- Label for overflow menu option that deletes all book data in the app -->
     <string name="action_delete_all_entries">Delete All Books</string>
 
+    <!-- Title text for the empty view, which describes the book image -->
+    <string name="empty_view_title_text">It seems you haven\'t added any books yet…</string>
+
+    <!-- Subtitle text for the empty view that prompts the user to add a book -->
+    <string name="empty_view_subtitle_text">Get started by adding a book</string>
+
     <!-- Title for the activity to add a new book -->
     <string name="data_entry_activity_title_new_book">Add a Book</string>
+
+    <!-- Title for the activity to edit a book -->
+    <string name="data_entry_activity_title_edit_book">Edit Book</string>
 
     <!-- Label for editor menu option to save book and leave editor -->
     <string name="action_save">Save</string>
@@ -50,11 +65,17 @@
     <!-- Text hint for supplier phone number field in the editor -->
     <string name="hint_supplier_phone">123–456–7890</string>
 
-    <!-- Toast text for error saving book in the editor -->
-    <string name="toast_error_saving">Error saving book! \nAll fields are required!</string>
+    <!-- Toast message in editor when new book has been successfully inserted -->
+    <string name="editor_insert_book_successful">Book saved</string>
 
-    <!-- Toast text toast for successful book save in the editor -->
-    <string name="toast_successful_save">Book saved with row id: </string>
+    <!-- Toast message in editor when new book has failed to be inserted -->
+    <string name="editor_insert_book_failed">Error with saving book</string>
+
+    <!-- Toast message in editor when current book was successfully updated -->
+    <string name="editor_update_book_successful">Book updated</string>
+
+    <!-- Toast message in editor when current book has failed to be updated -->
+    <string name="editor_update_book_failed">Error with updating book</string>
 
     <!-- Text for displaying the number of rows in the database -->
     <string name="number_of_rows">Number of rows in books database table: </string>
@@ -64,4 +85,45 @@
     <string name="dummy_supplier_name">Amazon</string>
     <string name="dummy_supplier_phone">888–280–4331</string>
     <string name="dummy_isbn">978–1119310686</string>
+
+    <string name="decrement_btn">-</string>
+    <string name="increment_btn">+</string>
+    <string name="quantity_min_message">Quantity minimum value is 1</string>
+    <string name="quantity_min_value">1</string>
+
+    <!-- Dialog message when user is leaving editor but hasn't saved changes -->
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+
+    <!-- Dialog button text for the option to discard a user's changes -->
+    <string name="discard">Discard</string>
+
+    <!-- Dialog button text for the option to keep editing the current book -->
+    <string name="keep_editing">Keep Editing</string>
+
+    <!-- Toast message in editor when current book was successfully deleted -->
+    <string name="editor_delete_book_successful">Book deleted</string>
+
+    <!-- Toast message in editor when current book has failed to be deleted -->
+    <string name="editor_delete_book_failed">Error with deleting book</string>
+
+    <!-- Dialog message to ask the user to confirm deleting the current book -->
+    <string name="delete_dialog_msg">Delete this book?</string>
+
+    <!-- Dialog button text for the option to confirm deleting the current book -->
+    <string name="delete">Delete</string>
+
+    <!-- Dialog button text for the option to cancel deletion of the current book -->
+    <string name="cancel">Cancel</string>
+
+    <!-- Toast message in catalog when all books were successfully deleted -->
+    <string name="editor_delete_all_books_successful">All books deleted</string>
+
+    <!-- Dialog button text for the option to confirm deleting the current book -->
+    <string name="delete_all_books">Delete all books?</string>
+
+    <!-- Additional text for toast message when book is sold -->
+    <string name="book_sold">"book sold!"</string>
+
+    <!-- Additional text for toast message when book is out of stock -->
+    <string name="out_of_stock">is currently out of stock! Please select another book!</string>
 </resources>
